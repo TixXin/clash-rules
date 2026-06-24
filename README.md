@@ -21,13 +21,13 @@
 
 ```text
 https://cdn.jsdelivr.net/gh/TixXin/clash-rules/clash.yaml
-https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ai-core.yaml
-https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ip-check.yaml
-https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-cn-direct.yaml
-https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-game-direct.yaml
-https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-lan.yaml
-https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-steam-direct.yaml
-https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-webrtc-block.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-ai-core.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-ip-check.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-cn-direct.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-game-direct.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-lan.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-steam-direct.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-webrtc-block.yaml
 ```
 
 ## clash.yaml 使用说明
@@ -72,7 +72,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-lan.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-lan.yaml
     path: ./ruleset/tixxin-lan.yaml
 
   tixxin-game-direct:
@@ -80,7 +80,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-game-direct.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-game-direct.yaml
     path: ./ruleset/tixxin-game-direct.yaml
 
   tixxin-steam-direct:
@@ -88,7 +88,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-steam-direct.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-steam-direct.yaml
     path: ./ruleset/tixxin-steam-direct.yaml
 
   tixxin-webrtc-block:
@@ -96,7 +96,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-webrtc-block.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-webrtc-block.yaml
     path: ./ruleset/tixxin-webrtc-block.yaml
 
   tixxin-ai-core:
@@ -104,7 +104,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ai-core.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-ai-core.yaml
     path: ./ruleset/tixxin-ai-core.yaml
 
   tixxin-ip-check:
@@ -112,7 +112,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ip-check.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-ip-check.yaml
     path: ./ruleset/tixxin-ip-check.yaml
 
   tixxin-cn-direct:
@@ -120,7 +120,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-cn-direct.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-cn-direct.yaml
     path: ./ruleset/tixxin-cn-direct.yaml
 
 rules:
