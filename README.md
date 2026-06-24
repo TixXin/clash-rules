@@ -20,16 +20,13 @@ public key, short ID, or any private subscription URL.
 
 ## jsDelivr URLs
 
-Replace `YOUR_GITHUB_USERNAME` and `clash-rules` with the actual GitHub owner
-and repository name if they are different.
-
 ```text
-https://cdn.jsdelivr.net/gh/YOUR_GITHUB_USERNAME/clash-rules@main/ruleset/local-ai-core.yaml
-https://cdn.jsdelivr.net/gh/YOUR_GITHUB_USERNAME/clash-rules@main/ruleset/local-cn-direct.yaml
-https://cdn.jsdelivr.net/gh/YOUR_GITHUB_USERNAME/clash-rules@main/ruleset/local-game-direct.yaml
-https://cdn.jsdelivr.net/gh/YOUR_GITHUB_USERNAME/clash-rules@main/ruleset/local-lan.yaml
-https://cdn.jsdelivr.net/gh/YOUR_GITHUB_USERNAME/clash-rules@main/ruleset/local-steam-direct.yaml
-https://cdn.jsdelivr.net/gh/YOUR_GITHUB_USERNAME/clash-rules@main/ruleset/local-webrtc-block.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-ai-core.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-cn-direct.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-game-direct.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-lan.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-steam-direct.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-webrtc-block.yaml
 ```
 
 ## Clash Party / Mihomo provider example
@@ -41,7 +38,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/YOUR_GITHUB_USERNAME/clash-rules@main/ruleset/local-ai-core.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-ai-core.yaml
     path: ./ruleset/local-ai-core.yaml
 
 rules:
