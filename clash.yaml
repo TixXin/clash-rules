@@ -143,7 +143,7 @@ dns:
     "rule-set:ai-anthropic":
       - https://1.1.1.1/dns-query#Tixxin-ISP
       - https://8.8.8.8/dns-query#Tixxin-ISP
-    "rule-set:local-ai-core":
+    "rule-set:tixxin-ai-core":
       - https://1.1.1.1/dns-query#Tixxin-ISP
       - https://8.8.8.8/dns-query#Tixxin-ISP
 
@@ -181,16 +181,16 @@ dns:
     "rule-set:steam-cn":
       - 223.5.5.5
       - 119.29.29.29
-    "rule-set:local-lan":
+    "rule-set:tixxin-lan":
       - 223.5.5.5
       - 119.29.29.29
-    "rule-set:local-game-direct":
+    "rule-set:tixxin-game-direct":
       - 223.5.5.5
       - 119.29.29.29
-    "rule-set:local-steam-direct":
+    "rule-set:tixxin-steam-direct":
       - 223.5.5.5
       - 119.29.29.29
-    "rule-set:local-cn-direct":
+    "rule-set:tixxin-cn-direct":
       - 223.5.5.5
       - 119.29.29.29
 
@@ -265,53 +265,53 @@ proxy-groups:
 # 4. 规则提供者
 # ====================================================================
 rule-providers:
-  local-lan:
+  tixxin-lan:
     type: http
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-lan.yaml
-    path: ./ruleset/local-lan.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-lan.yaml
+    path: ./ruleset/tixxin-lan.yaml
 
-  local-game-direct:
+  tixxin-game-direct:
     type: http
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-game-direct.yaml
-    path: ./ruleset/local-game-direct.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-game-direct.yaml
+    path: ./ruleset/tixxin-game-direct.yaml
 
-  local-steam-direct:
+  tixxin-steam-direct:
     type: http
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-steam-direct.yaml
-    path: ./ruleset/local-steam-direct.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-steam-direct.yaml
+    path: ./ruleset/tixxin-steam-direct.yaml
 
-  local-webrtc-block:
+  tixxin-webrtc-block:
     type: http
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-webrtc-block.yaml
-    path: ./ruleset/local-webrtc-block.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-webrtc-block.yaml
+    path: ./ruleset/tixxin-webrtc-block.yaml
 
-  local-ai-core:
+  tixxin-ai-core:
     type: http
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-ai-core.yaml
-    path: ./ruleset/local-ai-core.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ai-core.yaml
+    path: ./ruleset/tixxin-ai-core.yaml
 
-  local-cn-direct:
+  tixxin-cn-direct:
     type: http
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-cn-direct.yaml
-    path: ./ruleset/local-cn-direct.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-cn-direct.yaml
+    path: ./ruleset/tixxin-cn-direct.yaml
 
   ai-openai:
     type: http
@@ -414,29 +414,29 @@ rule-providers:
 # ====================================================================
 rules:
   # AI 平台全部走住宅 ISP。按你的要求放在第一位。
-  - RULE-SET,local-ai-core,Tixxin-ISP
+  - RULE-SET,tixxin-ai-core,Tixxin-ISP
   - RULE-SET,ai-openai,Tixxin-ISP
   - RULE-SET,ai-anthropic,Tixxin-ISP
 
   # 本地 / 局域网永远直连。
   - RULE-SET,private,DIRECT
   - RULE-SET,lancidr,DIRECT
-  - RULE-SET,local-lan,DIRECT
+  - RULE-SET,tixxin-lan,DIRECT
 
   # 游戏 / 加速器 / 反作弊优先直连，放在 WebRTC 阻断之前，避免误伤游戏 UDP。
-  - RULE-SET,local-game-direct,DIRECT
+  - RULE-SET,tixxin-game-direct,DIRECT
 
   # Steam 全量直连。
-  - RULE-SET,local-steam-direct,DIRECT
+  - RULE-SET,tixxin-steam-direct,DIRECT
   - RULE-SET,steam,DIRECT
   - RULE-SET,steam-cn,DIRECT
 
   # 常见浏览器 WebRTC / STUN 泄露防护。若以后要用语音会议或 AI 实时通话，可删除这组规则。
-  - RULE-SET,local-webrtc-block,REJECT
+  - RULE-SET,tixxin-webrtc-block,REJECT
 
   # 国内应用和常见国内域名直连。
   - RULE-SET,applications,DIRECT
-  - RULE-SET,local-cn-direct,DIRECT
+  - RULE-SET,tixxin-cn-direct,DIRECT
 
   # 广告和跟踪拦截。
   - RULE-SET,reject,REJECT
