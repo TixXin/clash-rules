@@ -1,24 +1,21 @@
-# Clash Rules for Tixxin
+# Tixxin Clash 规则集
 
-Personal Clash Party / Mihomo rule sets for routing AI traffic, Steam, games,
-WebRTC/STUN blocking, LAN traffic, and common China-direct domains.
+这是给 Clash Party / Mihomo 使用的个人规则集仓库，用来把常用的本地规则放到 GitHub + jsDelivr CDN 上，避免在每台电脑上额外复制 `ruleset` 文件夹。
 
-This repository is designed to be public. It should contain rule-set files only.
-Do not upload your full Clash profile, proxy server address, UUID, Reality
-public key, short ID, or any private subscription URL.
+这个仓库是公开仓库，只应该放规则文件。不要上传完整 Clash 配置、代理服务器地址、UUID、Reality public key、short-id、订阅地址或其它私密信息。
 
-## Files
+## 文件说明
 
-| File | Purpose |
+| 文件 | 用途 |
 | --- | --- |
-| `ruleset/local-ai-core.yaml` | ChatGPT, Codex, OpenAI, Claude, Anthropic core rules |
-| `ruleset/local-cn-direct.yaml` | WeChat, QQ, Tencent and other China-direct app/domain rules |
-| `ruleset/local-game-direct.yaml` | PUBG, anti-cheat, game launcher and accelerator direct rules |
-| `ruleset/local-lan.yaml` | LAN, loopback and private address direct rules |
-| `ruleset/local-steam-direct.yaml` | Steam process and Steam domain direct rules |
-| `ruleset/local-webrtc-block.yaml` | Common WebRTC/STUN UDP port blocking rules |
+| `ruleset/local-ai-core.yaml` | ChatGPT、Codex、OpenAI、Claude、Anthropic 核心规则 |
+| `ruleset/local-cn-direct.yaml` | 微信、QQ、腾讯等常见国内应用和域名直连规则 |
+| `ruleset/local-game-direct.yaml` | PUBG、反作弊、游戏启动器、加速器直连规则 |
+| `ruleset/local-lan.yaml` | 本地、回环、局域网、私有地址直连规则 |
+| `ruleset/local-steam-direct.yaml` | Steam 进程和 Steam 域名直连规则 |
+| `ruleset/local-webrtc-block.yaml` | 常见 WebRTC / STUN UDP 端口阻断规则 |
 
-## jsDelivr URLs
+## CDN 链接
 
 ```text
 https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-ai-core.yaml
@@ -29,10 +26,44 @@ https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-steam-direct.y
 https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-webrtc-block.yaml
 ```
 
-## Clash Party / Mihomo provider example
+## Clash Party / Mihomo 示例配置
+
+下面示例覆盖本仓库全部 6 个 YAML 规则集。`path` 是 Clash 本地缓存路径，不需要手动提前创建文件。
 
 ```yaml
 rule-providers:
+  local-lan:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-lan.yaml
+    path: ./ruleset/local-lan.yaml
+
+  local-game-direct:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-game-direct.yaml
+    path: ./ruleset/local-game-direct.yaml
+
+  local-steam-direct:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-steam-direct.yaml
+    path: ./ruleset/local-steam-direct.yaml
+
+  local-webrtc-block:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-webrtc-block.yaml
+    path: ./ruleset/local-webrtc-block.yaml
+
   local-ai-core:
     type: http
     behavior: classical
@@ -41,24 +72,76 @@ rule-providers:
     url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-ai-core.yaml
     path: ./ruleset/local-ai-core.yaml
 
+  local-cn-direct:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-cn-direct.yaml
+    path: ./ruleset/local-cn-direct.yaml
+
 rules:
+  # 本地、局域网、私有地址直连。
+  - RULE-SET,local-lan,DIRECT
+
+  # 游戏 / 加速器 / 反作弊优先直连，避免 WebRTC 阻断误伤游戏 UDP。
+  - RULE-SET,local-game-direct,DIRECT
+
+  # Steam 全量直连。
+  - RULE-SET,local-steam-direct,DIRECT
+
+  # 常见浏览器 WebRTC / STUN 泄露防护。
+  - RULE-SET,local-webrtc-block,REJECT
+
+  # ChatGPT / Codex / Claude / Anthropic 走住宅 ISP 策略组。
   - RULE-SET,local-ai-core,Tixxin-ISP
+
+  # 国内应用和常见国内域名直连。
+  - RULE-SET,local-cn-direct,DIRECT
 ```
 
-## Cache refresh
+## 推荐规则顺序
 
-If a rule file was updated but Clash Party still receives the old version,
-purge the corresponding jsDelivr URL:
+如果和其它公开规则集一起使用，建议按下面顺序放置：
+
+```yaml
+rules:
+  - RULE-SET,private,DIRECT
+  - RULE-SET,lancidr,DIRECT
+  - RULE-SET,local-lan,DIRECT
+  - RULE-SET,local-game-direct,DIRECT
+  - RULE-SET,local-steam-direct,DIRECT
+  - RULE-SET,steam,DIRECT
+  - RULE-SET,steam-cn,DIRECT
+  - RULE-SET,local-webrtc-block,REJECT
+  - RULE-SET,local-ai-core,Tixxin-ISP
+  - RULE-SET,ai-openai,Tixxin-ISP
+  - RULE-SET,ai-anthropic,Tixxin-ISP
+  - RULE-SET,applications,DIRECT
+  - RULE-SET,local-cn-direct,DIRECT
+  - RULE-SET,reject,REJECT
+  - RULE-SET,direct,DIRECT
+  - RULE-SET,cncidr,DIRECT
+  - GEOIP,CN,DIRECT
+  - RULE-SET,Adobe,Tixxin
+  - RULE-SET,proxy,Tixxin
+  - MATCH,漏网之鱼
+```
+
+## 更新缓存
+
+如果已经更新了规则文件，但 Clash Party 仍然拉到旧内容，可以到 jsDelivr 的清缓存页面刷新对应 URL：
 
 ```text
 https://www.jsdelivr.com/tools/purge
 ```
 
-## Validation
+## 规则格式
 
-Each rule file uses Clash/Mihomo `behavior: classical` YAML format:
+本仓库所有规则文件都使用 Clash / Mihomo 的 `behavior: classical` YAML 格式：
 
 ```yaml
 payload:
   - "DOMAIN-SUFFIX,example.com"
+  - "PROCESS-NAME,example.exe"
 ```
