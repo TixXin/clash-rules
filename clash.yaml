@@ -1,0 +1,452 @@
+# ====================================================================
+# Clash Party / Mihomo optimized profile
+# 目标：
+# 1. ChatGPT / Codex / Claude / Anthropic 全部走住宅 ISP 出口 BWGISP
+# 2. 其它国外流量默认走 BWG 机房出口
+# 3. 国内网站、国内应用、国内游戏、PUBG、Steam 全部直连
+# 4. TUN + fake-ip + DNS 分流，降低 DNS / WebRTC 泄露概率
+# ====================================================================
+
+mixed-port: 7890
+allow-lan: false
+mode: rule
+log-level: info
+external-controller: 127.0.0.1:9090
+unified-delay: true
+tcp-concurrent: true
+find-process-mode: strict
+global-client-fingerprint: chrome
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+# Clash Party 如果已经在界面里启用 TUN，也建议保持这些核心参数一致。
+tun:
+  enable: true
+  stack: mixed
+  auto-route: true
+  auto-detect-interface: true
+  strict-route: true
+  mtu: 1500
+  dns-hijack:
+    - any:53
+    - tcp://any:53
+
+sniffer:
+  enable: true
+  parse-pure-ip: true
+  sniff:
+    HTTP:
+      ports:
+        - 80
+        - 8080-8880
+      override-destination: true
+    TLS:
+      ports:
+        - 443
+        - 8443
+    QUIC:
+      ports:
+        - 443
+  force-domain:
+    - "+.openai.com"
+    - "+.chatgpt.com"
+    - "+.anthropic.com"
+    - "+.claude.ai"
+    - "+.claude.com"
+  skip-domain:
+    - "+.lan"
+    - "+.local"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "+.steamcontent.com"
+    - "+.steamserver.net"
+    - "+.pubg.com"
+    - "+.krafton.com"
+
+# ====================================================================
+# 1. 节点配置
+# ====================================================================
+proxies:
+  - name: BWGISP
+    type: vless
+    server: <IP>
+    port: 50488
+    uuid: <UUID>
+    udp: true
+    flow: xtls-rprx-vision
+    tls: true
+    servername: www.tesla.com
+    client-fingerprint: chrome
+    reality-opts:
+      public-key: <PUBLIC_KEY>
+      short-id: <SHORT_ID>
+
+  - name: BWG
+    type: vless
+    server: <IP>
+    port: 30439
+    uuid: <UUID>
+    udp: true
+    flow: xtls-rprx-vision
+    tls: true
+    servername: www.tesla.com
+    client-fingerprint: chrome
+    reality-opts:
+      public-key: <PUBLIC_KEY>
+      short-id: <SHORT_ID>
+
+# ====================================================================
+# 2. DNS
+# ====================================================================
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  use-hosts: true
+  use-system-hosts: false
+  respect-rules: true
+  prefer-h3: false
+
+  # 只用于解析 DoH 服务器、代理服务器域名等 bootstrap 场景。
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+    - 1.1.1.1
+
+  # 代理节点服务器名解析走国内 DNS，避免代理服务器自身解析递归走代理。
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+
+  # 默认 DNS 偏国内，保证国内网站和应用可用；AI/国外规则会在 nameserver-policy 中改走对应代理 DoH。
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+
+  direct-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  direct-nameserver-follow-policy: false
+
+  nameserver-policy:
+    "rule-set:ai-openai":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "rule-set:ai-anthropic":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "rule-set:local-ai-core":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+
+    "+.openai.com":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "+.chatgpt.com":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "+.oaistatic.com":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "+.oaiusercontent.com":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "+.anthropic.com":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "+.claude.ai":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "+.claude.com":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+
+    "rule-set:proxy":
+      - https://1.1.1.1/dns-query#Tixxin
+      - https://8.8.8.8/dns-query#Tixxin
+    "rule-set:direct":
+      - 223.5.5.5
+      - 119.29.29.29
+    "rule-set:steam":
+      - 223.5.5.5
+      - 119.29.29.29
+    "rule-set:steam-cn":
+      - 223.5.5.5
+      - 119.29.29.29
+    "rule-set:local-lan":
+      - 223.5.5.5
+      - 119.29.29.29
+    "rule-set:local-game-direct":
+      - 223.5.5.5
+      - 119.29.29.29
+    "rule-set:local-steam-direct":
+      - 223.5.5.5
+      - 119.29.29.29
+    "rule-set:local-cn-direct":
+      - 223.5.5.5
+      - 119.29.29.29
+
+    "+.baidu.com":
+      - 223.5.5.5
+      - 119.29.29.29
+    "+.qq.com":
+      - 223.5.5.5
+      - 119.29.29.29
+    "+.weixin.qq.com":
+      - 223.5.5.5
+      - 119.29.29.29
+    "+.bilibili.com":
+      - 223.5.5.5
+      - 119.29.29.29
+
+  fake-ip-filter:
+    - "*.lan"
+    - "*.local"
+    - "localhost"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "dns.msftncsi.com"
+    - "connectivitycheck.gstatic.com"
+    - "captive.apple.com"
+    - "time.*.com"
+    - "ntp.*.com"
+    - "+.qq.com"
+    - "+.weixin.qq.com"
+    - "+.servicewechat.com"
+    - "+.qpic.cn"
+    - "+.gtimg.com"
+    - "+.tencent.com"
+    - "+.myqcloud.com"
+    - "+.steamcontent.com"
+    - "+.steamserver.net"
+    - "+.steamusercontent.com"
+    - "+.steampowered.com"
+    - "+.steamcommunity.com"
+    - "+.steamstatic.com"
+    - "+.s.team"
+    - "+.pubg.com"
+    - "+.krafton.com"
+    - "+.kraftonid.com"
+    - "+.playbattlegrounds.com"
+    - "+.easyanticheat.net"
+    - "+.eac-cdn.com"
+
+# ====================================================================
+# 3. 策略组
+# ====================================================================
+proxy-groups:
+  - name: Tixxin-ISP
+    type: select
+    proxies:
+      - BWGISP
+
+  - name: Tixxin
+    type: select
+    proxies:
+      - BWG
+
+  # 兜底默认走 BWG，不走住宅，避免国内漏网流量被送去 ISP 导致打不开。
+  - name: 漏网之鱼
+    type: select
+    proxies:
+      - Tixxin
+      - Tixxin-ISP
+      - DIRECT
+
+# ====================================================================
+# 4. 规则提供者
+# ====================================================================
+rule-providers:
+  local-lan:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-lan.yaml
+    path: ./ruleset/local-lan.yaml
+
+  local-game-direct:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-game-direct.yaml
+    path: ./ruleset/local-game-direct.yaml
+
+  local-steam-direct:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-steam-direct.yaml
+    path: ./ruleset/local-steam-direct.yaml
+
+  local-webrtc-block:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-webrtc-block.yaml
+    path: ./ruleset/local-webrtc-block.yaml
+
+  local-ai-core:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-ai-core.yaml
+    path: ./ruleset/local-ai-core.yaml
+
+  local-cn-direct:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/local-cn-direct.yaml
+    path: ./ruleset/local-cn-direct.yaml
+
+  ai-openai:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/VPSDance/ai-proxy-rules@main/rules/clash/openai.yaml
+    path: ./ruleset/ai-openai.yaml
+
+  ai-anthropic:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/VPSDance/ai-proxy-rules@main/rules/clash/anthropic.yaml
+    path: ./ruleset/ai-anthropic.yaml
+
+  steam:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.list
+    path: ./ruleset/steam.list
+
+  steam-cn:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SteamCN/SteamCN.list
+    path: ./ruleset/steam-cn.list
+
+  Adobe:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Adobe/Adobe.yaml
+    path: ./ruleset/Adobe.yaml
+
+  applications:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt
+    path: ./ruleset/applications.yaml
+
+  reject:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
+    path: ./ruleset/reject.yaml
+
+  private:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt
+    path: ./ruleset/private.yaml
+
+  direct:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt
+    path: ./ruleset/direct.yaml
+
+  proxy:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt
+    path: ./ruleset/proxy.yaml
+
+  lancidr:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt
+    path: ./ruleset/lancidr.yaml
+
+  cncidr:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt
+    path: ./ruleset/cncidr.yaml
+
+# ====================================================================
+# 5. 分流规则
+# ====================================================================
+rules:
+  # AI 平台全部走住宅 ISP。按你的要求放在第一位。
+  - RULE-SET,local-ai-core,Tixxin-ISP
+  - RULE-SET,ai-openai,Tixxin-ISP
+  - RULE-SET,ai-anthropic,Tixxin-ISP
+
+  # 本地 / 局域网永远直连。
+  - RULE-SET,private,DIRECT
+  - RULE-SET,lancidr,DIRECT
+  - RULE-SET,local-lan,DIRECT
+
+  # 游戏 / 加速器 / 反作弊优先直连，放在 WebRTC 阻断之前，避免误伤游戏 UDP。
+  - RULE-SET,local-game-direct,DIRECT
+
+  # Steam 全量直连。
+  - RULE-SET,local-steam-direct,DIRECT
+  - RULE-SET,steam,DIRECT
+  - RULE-SET,steam-cn,DIRECT
+
+  # 常见浏览器 WebRTC / STUN 泄露防护。若以后要用语音会议或 AI 实时通话，可删除这组规则。
+  - RULE-SET,local-webrtc-block,REJECT
+
+  # 国内应用和常见国内域名直连。
+  - RULE-SET,applications,DIRECT
+  - RULE-SET,local-cn-direct,DIRECT
+
+  # 广告和跟踪拦截。
+  - RULE-SET,reject,REJECT
+
+  # 国内优先直连，普通国外走 BWG。
+  - RULE-SET,direct,DIRECT
+  - RULE-SET,cncidr,DIRECT
+  - GEOIP,CN,DIRECT
+  - RULE-SET,Adobe,Tixxin
+  - RULE-SET,proxy,Tixxin
+
+  # 最终兜底走 BWG，不走住宅 ISP。
+  - MATCH,漏网之鱼
