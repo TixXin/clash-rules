@@ -422,10 +422,8 @@ rule-providers:
 # 5. 分流规则
 # ====================================================================
 rules:
-  # AI 平台全部走住宅 ISP。按你的要求放在第一位。
+  # AI 核心入口仍放第一位。
   - RULE-SET,tixxin-ai-core,Tixxin-ISP
-  - RULE-SET,ai-openai,Tixxin-ISP
-  - RULE-SET,ai-anthropic,Tixxin-ISP
   - RULE-SET,tixxin-ip-check,Tixxin-ISP
 
   # 本地 / 局域网永远直连。
@@ -433,8 +431,12 @@ rules:
   - RULE-SET,lancidr,DIRECT
   - RULE-SET,tixxin-lan,DIRECT
 
-  # 游戏 / 加速器 / 反作弊优先直连，放在 WebRTC 阻断之前，避免误伤游戏 UDP。
+  # 游戏 / 加速器 / 反作弊优先直连，放在宽泛 AI 遥测规则前，避免 Datadog 被 AI 规则抢走。
   - RULE-SET,tixxin-game-direct,DIRECT
+
+  # AI 扩展规则放在游戏规则之后，避免 DOMAIN-KEYWORD,datadog 影响 PUBG。
+  - RULE-SET,ai-openai,Tixxin-ISP
+  - RULE-SET,ai-anthropic,Tixxin-ISP
 
   # Steam 全量直连。
   - RULE-SET,tixxin-steam-direct,DIRECT

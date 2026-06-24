@@ -12,7 +12,7 @@
 | `ruleset/tixxin-ai-core.yaml` | ChatGPT、Codex、OpenAI、Claude、Anthropic 核心规则 |
 | `ruleset/tixxin-ip-check.yaml` | IP / DNS 检测站规则，用于另一台电脑手动测试住宅出口 |
 | `ruleset/tixxin-cn-direct.yaml` | 微信、QQ、腾讯等常见国内应用和域名直连规则 |
-| `ruleset/tixxin-game-direct.yaml` | PUBG、反作弊、游戏启动器、加速器直连规则 |
+| `ruleset/tixxin-game-direct.yaml` | PUBG、PUBG Datadog 遥测、反作弊、游戏启动器、加速器直连规则 |
 | `ruleset/tixxin-lan.yaml` | 本地、回环、局域网、私有地址直连规则 |
 | `ruleset/tixxin-steam-direct.yaml` | Steam 进程和 Steam 域名直连规则 |
 | `ruleset/tixxin-webrtc-block.yaml` | 常见 WebRTC / STUN UDP 端口阻断规则 |
@@ -47,9 +47,10 @@ reality-opts:
 ```yaml
 rules:
   - RULE-SET,tixxin-ai-core,Tixxin-ISP
+  - RULE-SET,tixxin-ip-check,Tixxin-ISP
+  - RULE-SET,tixxin-game-direct,DIRECT
   - RULE-SET,ai-openai,Tixxin-ISP
   - RULE-SET,ai-anthropic,Tixxin-ISP
-  - RULE-SET,tixxin-ip-check,Tixxin-ISP
 ```
 
 模板默认 DNS 已改为国外 DoH 并经 `Tixxin-ISP` 转发，减少 DNS 深度测试暴露中国 DNS：
@@ -132,8 +133,12 @@ rules:
   # 本地、局域网、私有地址直连。
   - RULE-SET,tixxin-lan,DIRECT
 
-  # 游戏 / 加速器 / 反作弊优先直连，避免 WebRTC 阻断误伤游戏 UDP。
+  # 游戏 / 加速器 / 反作弊优先直连，避免 Datadog 被宽泛 AI 规则抢走。
   - RULE-SET,tixxin-game-direct,DIRECT
+
+  # AI 扩展规则放在游戏规则之后，避免影响 PUBG 进游戏。
+  - RULE-SET,ai-openai,Tixxin-ISP
+  - RULE-SET,ai-anthropic,Tixxin-ISP
 
   # Steam 全量直连。
   - RULE-SET,tixxin-steam-direct,DIRECT
@@ -152,13 +157,13 @@ rules:
 ```yaml
 rules:
   - RULE-SET,tixxin-ai-core,Tixxin-ISP
-  - RULE-SET,ai-openai,Tixxin-ISP
-  - RULE-SET,ai-anthropic,Tixxin-ISP
   - RULE-SET,tixxin-ip-check,Tixxin-ISP
   - RULE-SET,private,DIRECT
   - RULE-SET,lancidr,DIRECT
   - RULE-SET,tixxin-lan,DIRECT
   - RULE-SET,tixxin-game-direct,DIRECT
+  - RULE-SET,ai-openai,Tixxin-ISP
+  - RULE-SET,ai-anthropic,Tixxin-ISP
   - RULE-SET,tixxin-steam-direct,DIRECT
   - RULE-SET,steam,DIRECT
   - RULE-SET,steam-cn,DIRECT

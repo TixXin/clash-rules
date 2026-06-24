@@ -13,6 +13,7 @@ payload:
   - "DOMAIN-SUFFIX,krafton.com"
   - "DOMAIN-SUFFIX,kraftonid.com"
   - "DOMAIN-SUFFIX,playbattlegrounds.com"
+  - "DOMAIN,rum.browser-intake-datadoghq.com"
   - "DOMAIN-SUFFIX,easy.ac"
   - "DOMAIN-SUFFIX,eac-cdn.com"
   - "DOMAIN-SUFFIX,easyanticheat.net"
