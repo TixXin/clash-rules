@@ -10,6 +10,7 @@
 | --- | --- |
 | `clash.yaml` | 脱敏版 Clash Party / Mihomo 完整配置模板，节点信息使用占位符 |
 | `ruleset/tixxin-ai-core.yaml` | ChatGPT、Codex、OpenAI、Claude、Anthropic 核心规则 |
+| `ruleset/tixxin-ip-check.yaml` | IP / DNS 检测站规则，用于另一台电脑手动测试住宅出口 |
 | `ruleset/tixxin-cn-direct.yaml` | 微信、QQ、腾讯等常见国内应用和域名直连规则 |
 | `ruleset/tixxin-game-direct.yaml` | PUBG、反作弊、游戏启动器、加速器直连规则 |
 | `ruleset/tixxin-lan.yaml` | 本地、回环、局域网、私有地址直连规则 |
@@ -21,6 +22,7 @@
 ```text
 https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/clash.yaml
 https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ai-core.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ip-check.yaml
 https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-cn-direct.yaml
 https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-game-direct.yaml
 https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-lan.yaml
@@ -47,11 +49,20 @@ rules:
   - RULE-SET,tixxin-ai-core,Tixxin-ISP
   - RULE-SET,ai-openai,Tixxin-ISP
   - RULE-SET,ai-anthropic,Tixxin-ISP
+  - RULE-SET,tixxin-ip-check,Tixxin-ISP
+```
+
+模板默认 DNS 已改为国外 DoH 并经 `Tixxin-ISP` 转发，减少 DNS 深度测试暴露中国 DNS：
+
+```yaml
+nameserver:
+  - https://1.1.1.1/dns-query#Tixxin-ISP
+  - https://8.8.8.8/dns-query#Tixxin-ISP
 ```
 
 ## Clash Party / Mihomo 示例配置
 
-下面示例覆盖本仓库全部 6 个 YAML 规则集。`path` 是 Clash 本地缓存路径，不需要手动提前创建文件。
+下面示例覆盖本仓库全部 7 个 YAML 规则集。`path` 是 Clash 本地缓存路径，不需要手动提前创建文件。
 
 ```yaml
 rule-providers:
@@ -95,6 +106,14 @@ rule-providers:
     url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ai-core.yaml
     path: ./ruleset/tixxin-ai-core.yaml
 
+  tixxin-ip-check:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ip-check.yaml
+    path: ./ruleset/tixxin-ip-check.yaml
+
   tixxin-cn-direct:
     type: http
     behavior: classical
@@ -106,6 +125,9 @@ rule-providers:
 rules:
   # ChatGPT / Codex / Claude / Anthropic 走住宅 ISP 策略组。
   - RULE-SET,tixxin-ai-core,Tixxin-ISP
+
+  # IP / DNS 检测站走住宅 ISP，便于在另一台电脑手动验证。
+  - RULE-SET,tixxin-ip-check,Tixxin-ISP
 
   # 本地、局域网、私有地址直连。
   - RULE-SET,tixxin-lan,DIRECT
@@ -132,6 +154,7 @@ rules:
   - RULE-SET,tixxin-ai-core,Tixxin-ISP
   - RULE-SET,ai-openai,Tixxin-ISP
   - RULE-SET,ai-anthropic,Tixxin-ISP
+  - RULE-SET,tixxin-ip-check,Tixxin-ISP
   - RULE-SET,private,DIRECT
   - RULE-SET,lancidr,DIRECT
   - RULE-SET,tixxin-lan,DIRECT
@@ -157,6 +180,48 @@ rules:
 
 ```text
 https://www.jsdelivr.com/tools/purge
+```
+
+## 另一台电脑手动测试步骤
+
+在另一台电脑导入或刷新下面的配置：
+
+```text
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/clash.yaml
+```
+
+Clash Party 手动确认：
+
+```text
+DNS 覆写：开启
+嗅探覆写：开启
+虚拟网卡：开启
+Tun 模式堆栈：Mixed
+严格路由：开启
+自动设置全局路由：开启
+自动选择流量出口接口：开启
+DNS 劫持：any:53,tcp://any:53
+```
+
+重启 Clash Party 内核后测试：
+
+```text
+https://ip.net.coffee/gpt/
+https://ip.net.coffee/claude/
+https://ip.net.coffee/dns/
+https://ippure.com/
+https://www.iping.cc/
+https://whoer.net/zh
+https://ping0.cc/
+```
+
+预期结果：
+
+```text
+ChatGPT / Claude 检测：显示住宅 ISP。
+DNS 检测：不再出现中国电信 / 联通 DNS。
+IP 检测站：走 Tixxin-ISP。
+国内网站、Steam、PUBG：仍应可用。
 ```
 
 ## 规则格式

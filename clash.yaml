@@ -122,12 +122,10 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
 
-  # 默认 DNS 偏国内，保证国内网站和应用可用；AI/国外规则会在 nameserver-policy 中改走对应代理 DoH。
+  # 默认解析走国外 DoH，并指定走住宅 ISP，避免通用 DNS 深度测试暴露中国 DNS。
   nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
+    - https://1.1.1.1/dns-query#Tixxin-ISP
+    - https://8.8.8.8/dns-query#Tixxin-ISP
 
   direct-nameserver:
     - 223.5.5.5
@@ -144,6 +142,9 @@ dns:
       - https://1.1.1.1/dns-query#Tixxin-ISP
       - https://8.8.8.8/dns-query#Tixxin-ISP
     "rule-set:tixxin-ai-core":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "rule-set:tixxin-ip-check":
       - https://1.1.1.1/dns-query#Tixxin-ISP
       - https://8.8.8.8/dns-query#Tixxin-ISP
 
@@ -305,6 +306,14 @@ rule-providers:
     url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ai-core.yaml
     path: ./ruleset/tixxin-ai-core.yaml
 
+  tixxin-ip-check:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ip-check.yaml
+    path: ./ruleset/tixxin-ip-check.yaml
+
   tixxin-cn-direct:
     type: http
     behavior: classical
@@ -417,6 +426,7 @@ rules:
   - RULE-SET,tixxin-ai-core,Tixxin-ISP
   - RULE-SET,ai-openai,Tixxin-ISP
   - RULE-SET,ai-anthropic,Tixxin-ISP
+  - RULE-SET,tixxin-ip-check,Tixxin-ISP
 
   # 本地 / 局域网永远直连。
   - RULE-SET,private,DIRECT
