@@ -20,7 +20,7 @@
 ## CDN 链接
 
 ```text
-https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/clash.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules/clash.yaml
 https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ai-core.yaml
 https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ip-check.yaml
 https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-cn-direct.yaml
@@ -187,7 +187,7 @@ https://www.jsdelivr.com/tools/purge
 在另一台电脑导入或刷新下面的配置：
 
 ```text
-https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/clash.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules/clash.yaml
 ```
 
 Clash Party 手动确认：
