@@ -19,8 +19,15 @@
 
 ## CDN 链接
 
+完整配置测试建议使用固定提交版，避免 jsDelivr 分支缓存滞后：
+
 ```text
-https://cdn.jsdelivr.net/gh/TixXin/clash-rules/clash.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules@2821752/clash.yaml
+```
+
+规则集文件使用无版本 CDN 链接，方便 Clash Party 定期刷新规则：
+
+```text
 https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-ai-core.yaml
 https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-ip-check.yaml
 https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-cn-direct.yaml
@@ -192,7 +199,7 @@ https://www.jsdelivr.com/tools/purge
 在另一台电脑导入或刷新下面的配置：
 
 ```text
-https://cdn.jsdelivr.net/gh/TixXin/clash-rules/clash.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules@2821752/clash.yaml
 ```
 
 Clash Party 手动确认：
