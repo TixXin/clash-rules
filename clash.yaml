@@ -1,10 +1,10 @@
 # ====================================================================
-# Clash Party / Mihomo optimized profile
+# Clash Party / Mihomo optimized profile - DNS leak safe
 # 目标：
 # 1. ChatGPT / Codex / Claude / Anthropic 全部走住宅 ISP 出口 BWGISP
 # 2. 其它国外流量默认走 BWG 机房出口
-# 3. 国内网站、国内应用、国内游戏、PUBG、Steam 全部直连
-# 4. TUN + fake-ip + DNS 分流，降低 DNS / WebRTC 泄露概率
+# 3. 国内网站、国内应用、国内游戏、PUBG、Steam 仍按规则直连
+# 4. DNS 查询尽量统一经代理 DoH，避免 DNS 泄露检测出现中国 DNS
 # ====================================================================
 
 mixed-port: 7890
@@ -21,7 +21,6 @@ profile:
   store-selected: true
   store-fake-ip: true
 
-# Clash Party 如果已经在界面里启用 TUN，也建议保持这些核心参数一致。
 tun:
   enable: true
   stack: mixed
@@ -55,6 +54,10 @@ sniffer:
     - "+.anthropic.com"
     - "+.claude.ai"
     - "+.claude.com"
+    - "+.net.coffee"
+    - "+.dnsleaktest.com"
+    - "+.browserleaks.com"
+    - "+.ipleak.net"
   skip-domain:
     - "+.lan"
     - "+.local"
@@ -111,30 +114,30 @@ dns:
   respect-rules: true
   prefer-h3: false
 
-  # 只用于解析 DoH 服务器、代理服务器域名等 bootstrap 场景。
+  # 仅用于 bootstrap。你的代理节点和 DoH 地址都是 IP，正常不会出现在 DNS 泄露检测里。
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
-    - 1.1.1.1
 
-  # 代理节点服务器名解析走国内 DNS，避免代理服务器自身解析递归走代理。
+  # 代理节点是 IP，这里保留国内 DNS 作为兜底 bootstrap。
   proxy-server-nameserver:
     - 223.5.5.5
     - 119.29.29.29
 
-  # 默认解析走国外 DoH，并指定走住宅 ISP，避免通用 DNS 深度测试暴露中国 DNS。
+  # 默认 DNS 统一走代理 DoH。
   nameserver:
     - https://1.1.1.1/dns-query#Tixxin-ISP
     - https://8.8.8.8/dns-query#Tixxin-ISP
 
+  # 防泄露优先：直连域名的 DNS 也走代理 DoH，避免 DNS 测试看到中国 DNS。
+  # 如果更在意国内 CDN 速度，可改回 223.5.5.5 / 119.29.29.29。
   direct-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  direct-nameserver-follow-policy: false
+    - https://1.1.1.1/dns-query#Tixxin
+    - https://8.8.8.8/dns-query#Tixxin
+  direct-nameserver-follow-policy: true
 
   nameserver-policy:
+    # AI / IP / DNS 检测站强制住宅 ISP DNS。
     "rule-set:ai-openai":
       - https://1.1.1.1/dns-query#Tixxin-ISP
       - https://8.8.8.8/dns-query#Tixxin-ISP
@@ -169,44 +172,55 @@ dns:
     "+.claude.com":
       - https://1.1.1.1/dns-query#Tixxin-ISP
       - https://8.8.8.8/dns-query#Tixxin-ISP
+    "+.net.coffee":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "+.dnsleaktest.com":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "+.browserleaks.com":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "+.ipleak.net":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "+.ip138.com":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "+.ipip.net":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
+    "+.ip.sb":
+      - https://1.1.1.1/dns-query#Tixxin-ISP
+      - https://8.8.8.8/dns-query#Tixxin-ISP
 
+    # 普通国外规则走 BWG DNS。
     "rule-set:proxy":
       - https://1.1.1.1/dns-query#Tixxin
       - https://8.8.8.8/dns-query#Tixxin
-    "rule-set:direct":
-      - 223.5.5.5
-      - 119.29.29.29
-    "rule-set:steam":
-      - 223.5.5.5
-      - 119.29.29.29
-    "rule-set:steam-cn":
-      - 223.5.5.5
-      - 119.29.29.29
-    "rule-set:tixxin-lan":
-      - 223.5.5.5
-      - 119.29.29.29
-    "rule-set:tixxin-game-direct":
-      - 223.5.5.5
-      - 119.29.29.29
-    "rule-set:tixxin-steam-direct":
-      - 223.5.5.5
-      - 119.29.29.29
-    "rule-set:tixxin-cn-direct":
-      - 223.5.5.5
-      - 119.29.29.29
 
-    "+.baidu.com":
-      - 223.5.5.5
-      - 119.29.29.29
-    "+.qq.com":
-      - 223.5.5.5
-      - 119.29.29.29
-    "+.weixin.qq.com":
-      - 223.5.5.5
-      - 119.29.29.29
-    "+.bilibili.com":
-      - 223.5.5.5
-      - 119.29.29.29
+    # 防泄露优先：直连规则也不再使用国内 DNS。
+    "rule-set:direct":
+      - https://1.1.1.1/dns-query#Tixxin
+      - https://8.8.8.8/dns-query#Tixxin
+    "rule-set:steam":
+      - https://1.1.1.1/dns-query#Tixxin
+      - https://8.8.8.8/dns-query#Tixxin
+    "rule-set:steam-cn":
+      - https://1.1.1.1/dns-query#Tixxin
+      - https://8.8.8.8/dns-query#Tixxin
+    "rule-set:tixxin-lan":
+      - https://1.1.1.1/dns-query#Tixxin
+      - https://8.8.8.8/dns-query#Tixxin
+    "rule-set:tixxin-game-direct":
+      - https://1.1.1.1/dns-query#Tixxin
+      - https://8.8.8.8/dns-query#Tixxin
+    "rule-set:tixxin-steam-direct":
+      - https://1.1.1.1/dns-query#Tixxin
+      - https://8.8.8.8/dns-query#Tixxin
+    "rule-set:tixxin-cn-direct":
+      - https://1.1.1.1/dns-query#Tixxin
+      - https://8.8.8.8/dns-query#Tixxin
 
   fake-ip-filter:
     - "*.lan"
@@ -254,13 +268,12 @@ proxy-groups:
     proxies:
       - BWG
 
-  # 兜底默认走 BWG，不走住宅，避免国内漏网流量被送去 ISP 导致打不开。
+  # 兜底不放 DIRECT，避免误选后未知域名直连或触发本地 DNS。
   - name: 漏网之鱼
     type: select
     proxies:
       - Tixxin
       - Tixxin-ISP
-      - DIRECT
 
 # ====================================================================
 # 4. 规则提供者
@@ -271,7 +284,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-lan.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-lan.yaml
     path: ./ruleset/tixxin-lan.yaml
 
   tixxin-game-direct:
@@ -279,7 +292,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-game-direct.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-game-direct.yaml
     path: ./ruleset/tixxin-game-direct.yaml
 
   tixxin-steam-direct:
@@ -287,7 +300,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-steam-direct.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-steam-direct.yaml
     path: ./ruleset/tixxin-steam-direct.yaml
 
   tixxin-webrtc-block:
@@ -295,7 +308,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-webrtc-block.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-webrtc-block.yaml
     path: ./ruleset/tixxin-webrtc-block.yaml
 
   tixxin-ai-core:
@@ -303,7 +316,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-ai-core.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ai-core.yaml
     path: ./ruleset/tixxin-ai-core.yaml
 
   tixxin-ip-check:
@@ -311,7 +324,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-ip-check.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-ip-check.yaml
     path: ./ruleset/tixxin-ip-check.yaml
 
   tixxin-cn-direct:
@@ -319,7 +332,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules/ruleset/tixxin-cn-direct.yaml
+    url: https://cdn.jsdelivr.net/gh/TixXin/clash-rules@main/ruleset/tixxin-cn-direct.yaml
     path: ./ruleset/tixxin-cn-direct.yaml
 
   ai-openai:
@@ -422,8 +435,21 @@ rule-providers:
 # 5. 分流规则
 # ====================================================================
 rules:
-  # AI 核心入口仍放第一位。
+  # 检测站放最前，避免被 direct / cncidr / GEOIP 抢走。
+  - DOMAIN-SUFFIX,net.coffee,Tixxin-ISP
+  - DOMAIN-SUFFIX,dnsleaktest.com,Tixxin-ISP
+  - DOMAIN-SUFFIX,browserleaks.com,Tixxin-ISP
+  - DOMAIN-SUFFIX,ipleak.net,Tixxin-ISP
+  - DOMAIN-SUFFIX,ip138.com,Tixxin-ISP
+  - DOMAIN-SUFFIX,ipip.net,Tixxin-ISP
+  - DOMAIN-SUFFIX,ip.sb,Tixxin-ISP
+  - DOMAIN-SUFFIX,ifconfig.me,Tixxin-ISP
+  - DOMAIN-SUFFIX,whoer.net,Tixxin-ISP
+
+  # AI 平台全部走住宅 ISP。
   - RULE-SET,tixxin-ai-core,Tixxin-ISP
+  - RULE-SET,ai-openai,Tixxin-ISP
+  - RULE-SET,ai-anthropic,Tixxin-ISP
   - RULE-SET,tixxin-ip-check,Tixxin-ISP
 
   # 本地 / 局域网永远直连。
@@ -431,19 +457,15 @@ rules:
   - RULE-SET,lancidr,DIRECT
   - RULE-SET,tixxin-lan,DIRECT
 
-  # 游戏 / 加速器 / 反作弊优先直连，放在宽泛 AI 遥测规则前，避免 Datadog 被 AI 规则抢走。
+  # 游戏 / 加速器 / 反作弊优先直连，放在 WebRTC 阻断之前，避免误伤游戏 UDP。
   - RULE-SET,tixxin-game-direct,DIRECT
-
-  # AI 扩展规则放在游戏规则之后，避免 DOMAIN-KEYWORD,datadog 影响 PUBG。
-  - RULE-SET,ai-openai,Tixxin-ISP
-  - RULE-SET,ai-anthropic,Tixxin-ISP
 
   # Steam 全量直连。
   - RULE-SET,tixxin-steam-direct,DIRECT
   - RULE-SET,steam,DIRECT
   - RULE-SET,steam-cn,DIRECT
 
-  # 常见浏览器 WebRTC / STUN 泄露防护。若以后要用语音会议或 AI 实时通话，可删除这组规则。
+  # 常见浏览器 WebRTC / STUN 泄露防护。
   - RULE-SET,tixxin-webrtc-block,REJECT
 
   # 国内应用和常见国内域名直连。
@@ -456,9 +478,9 @@ rules:
   # 国内优先直连，普通国外走 BWG。
   - RULE-SET,direct,DIRECT
   - RULE-SET,cncidr,DIRECT
-  - GEOIP,CN,DIRECT
+  - GEOIP,CN,DIRECT,no-resolve
   - RULE-SET,Adobe,Tixxin
   - RULE-SET,proxy,Tixxin
 
-  # 最终兜底走 BWG，不走住宅 ISP。
+  # 最终兜底走 BWG，不提供 DIRECT 兜底。
   - MATCH,漏网之鱼
