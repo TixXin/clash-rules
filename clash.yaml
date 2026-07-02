@@ -1,10 +1,11 @@
 # ====================================================================
-# Clash Party / Mihomo optimized profile - DNS leak safe
+# Clash Party / Mihomo optimized profile - fixed DIRECT timeout
 # 目标：
 # 1. ChatGPT / Codex / Claude / Anthropic 全部走住宅 ISP 出口 BWGISP
 # 2. 其它国外流量默认走 BWG 机房出口
-# 3. 国内网站、国内应用、国内游戏、PUBG、Steam 仍按规则直连
-# 4. DNS 查询尽量统一经代理 DoH，避免 DNS 泄露检测出现中国 DNS
+# 3. 国内网站、国内应用、国内游戏、PUBG、Steam 全部直连
+# 4. DNS / IP 检测站和 AI 域名强制走代理 DNS，降低 DNS 泄露
+# 5. DIRECT 使用国内测速 URL，避免默认国外测速地址导致直连超时
 # ====================================================================
 
 mixed-port: 7890
@@ -100,6 +101,7 @@ proxies:
       public-key: <PUBLIC_KEY>
       short-id: <SHORT_ID>
 
+
 # ====================================================================
 # 2. DNS
 # ====================================================================
@@ -114,7 +116,7 @@ dns:
   respect-rules: true
   prefer-h3: false
 
-  # 仅用于 bootstrap。你的代理节点和 DoH 地址都是 IP，正常不会出现在 DNS 泄露检测里。
+  # 仅用于 bootstrap；代理节点和主要 DoH 地址都是 IP，正常不会出现在 DNS 泄露测试中。
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -124,17 +126,19 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
 
-  # 默认 DNS 统一走代理 DoH。
+  # 默认 DNS 走代理 DoH，国外未命中域名不暴露国内 DNS。
   nameserver:
     - https://1.1.1.1/dns-query#Tixxin-ISP
     - https://8.8.8.8/dns-query#Tixxin-ISP
 
-  # 防泄露优先：直连域名的 DNS 也走代理 DoH，避免 DNS 测试看到中国 DNS。
-  # 如果更在意国内 CDN 速度，可改回 223.5.5.5 / 119.29.29.29。
+  # 修复 DIRECT 超时/国内直连解析异常：直连域名仍使用国内 DNS。
+  # DNS / IP 检测站和 AI 域名会在 nameserver-policy 中单独强制走代理 DNS。
   direct-nameserver:
-    - https://1.1.1.1/dns-query#Tixxin
-    - https://8.8.8.8/dns-query#Tixxin
-  direct-nameserver-follow-policy: true
+    - 223.5.5.5
+    - 119.29.29.29
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  direct-nameserver-follow-policy: false
 
   nameserver-policy:
     # AI / IP / DNS 检测站强制住宅 ISP DNS。
@@ -199,28 +203,41 @@ dns:
       - https://1.1.1.1/dns-query#Tixxin
       - https://8.8.8.8/dns-query#Tixxin
 
-    # 防泄露优先：直连规则也不再使用国内 DNS。
+    # 国内/游戏/Steam 直连规则使用国内 DNS，保证 DIRECT 和国内 CDN 正常。
     "rule-set:direct":
-      - https://1.1.1.1/dns-query#Tixxin
-      - https://8.8.8.8/dns-query#Tixxin
+      - 223.5.5.5
+      - 119.29.29.29
     "rule-set:steam":
-      - https://1.1.1.1/dns-query#Tixxin
-      - https://8.8.8.8/dns-query#Tixxin
+      - 223.5.5.5
+      - 119.29.29.29
     "rule-set:steam-cn":
-      - https://1.1.1.1/dns-query#Tixxin
-      - https://8.8.8.8/dns-query#Tixxin
+      - 223.5.5.5
+      - 119.29.29.29
     "rule-set:tixxin-lan":
-      - https://1.1.1.1/dns-query#Tixxin
-      - https://8.8.8.8/dns-query#Tixxin
+      - 223.5.5.5
+      - 119.29.29.29
     "rule-set:tixxin-game-direct":
-      - https://1.1.1.1/dns-query#Tixxin
-      - https://8.8.8.8/dns-query#Tixxin
+      - 223.5.5.5
+      - 119.29.29.29
     "rule-set:tixxin-steam-direct":
-      - https://1.1.1.1/dns-query#Tixxin
-      - https://8.8.8.8/dns-query#Tixxin
+      - 223.5.5.5
+      - 119.29.29.29
     "rule-set:tixxin-cn-direct":
-      - https://1.1.1.1/dns-query#Tixxin
-      - https://8.8.8.8/dns-query#Tixxin
+      - 223.5.5.5
+      - 119.29.29.29
+
+    "+.baidu.com":
+      - 223.5.5.5
+      - 119.29.29.29
+    "+.qq.com":
+      - 223.5.5.5
+      - 119.29.29.29
+    "+.weixin.qq.com":
+      - 223.5.5.5
+      - 119.29.29.29
+    "+.bilibili.com":
+      - 223.5.5.5
+      - 119.29.29.29
 
   fake-ip-filter:
     - "*.lan"
@@ -258,15 +275,32 @@ dns:
 # 3. 策略组
 # ====================================================================
 proxy-groups:
+  # 自定义 GLOBAL，使用国内可达测速 URL，避免 DIRECT 用默认国外 URL 测速超时。
+  - name: GLOBAL
+    type: select
+    proxies:
+      - 漏网之鱼
+      - Tixxin
+      - Tixxin-ISP
+      - DIRECT
+      - BWG
+      - BWGISP
+    url: http://connectivitycheck.platform.hicloud.com/generate_204
+    interval: 300
+
   - name: Tixxin-ISP
     type: select
     proxies:
       - BWGISP
+    url: http://connectivitycheck.platform.hicloud.com/generate_204
+    interval: 300
 
   - name: Tixxin
     type: select
     proxies:
       - BWG
+    url: http://connectivitycheck.platform.hicloud.com/generate_204
+    interval: 300
 
   # 兜底不放 DIRECT，避免误选后未知域名直连或触发本地 DNS。
   - name: 漏网之鱼
@@ -274,6 +308,8 @@ proxy-groups:
     proxies:
       - Tixxin
       - Tixxin-ISP
+    url: http://connectivitycheck.platform.hicloud.com/generate_204
+    interval: 300
 
 # ====================================================================
 # 4. 规则提供者
