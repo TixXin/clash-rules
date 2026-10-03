@@ -22,3 +22,40 @@ payload:
   - "PROCESS-NAME,weixin.exe"
   - "PROCESS-NAME,WeChat.exe"
   - "PROCESS-NAME,pixcake.exe"
+
+  # 抖音核心、分享、活动与前端资源。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/douyin
+  - "DOMAIN-SUFFIX,douyin.com"
+  - "DOMAIN-SUFFIX,amemv.com"
+  - "DOMAIN-SUFFIX,amemv.cn"
+  - "DOMAIN-SUFFIX,amemv.net"
+  - "DOMAIN-SUFFIX,iesdouyin.com"
+  - "DOMAIN-SUFFIX,iesdouyin.net"
+  - "DOMAIN-SUFFIX,douyinact.com"
+  - "DOMAIN-SUFFIX,douyinact.net"
+  - "DOMAIN-SUFFIX,douyinfe.com"
+
+  # 抖音图片、视频 CDN 与直播。
+  - "DOMAIN-SUFFIX,douyincdn.com"
+  - "DOMAIN-SUFFIX,douyinpic.com"
+  - "DOMAIN-SUFFIX,douyinstatic.com"
+  - "DOMAIN-SUFFIX,douyinvod.com"
+  - "DOMAIN-SUFFIX,idouyinpic.com"
+  - "DOMAIN-SUFFIX,idouyinstatic.com"
+  - "DOMAIN-SUFFIX,idouyinvod.com"
+  - "DOMAIN-SUFFIX,douyinliving.com"
+  - "DOMAIN-SUFFIX,idouyinliving.com"
+
+  # 抖音电商、支付、生活服务与开放平台。
+  - "DOMAIN-SUFFIX,douyinec.com"
+  - "DOMAIN-SUFFIX,douyinpay.com"
+  - "DOMAIN-SUFFIX,ulpay.com"
+  - "DOMAIN-SUFFIX,lifexue.com"
+  - "DOMAIN-SUFFIX,open-douyin.com"
+
+  # 抖音依赖的字节共享 API / 静态资源；也会覆盖使用它们的其它字节应用。
+  # 来源：https://github.com/blackmatrix7/ios_rule_script/blob/master/rule/Clash/DouYin/DouYin.yaml
+  - "DOMAIN-SUFFIX,snssdk.com"
+  - "DOMAIN-SUFFIX,pstatp.com"
+  - "DOMAIN,lf3-static.bytednsdoc.com"
+  - "DOMAIN,v5-dy-o-abtest.zjcdn.com"

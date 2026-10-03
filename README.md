@@ -11,7 +11,7 @@
 | `clash.yaml` | 脱敏版 Clash Party / Mihomo 完整配置模板，节点信息使用占位符 |
 | `ruleset/tixxin-ai-core.yaml` | ChatGPT、Codex、OpenAI、Claude、Anthropic 核心规则 |
 | `ruleset/tixxin-ip-check.yaml` | IP / DNS 检测站规则，用于另一台电脑手动测试住宅出口 |
-| `ruleset/tixxin-cn-direct.yaml` | 微信、QQ、腾讯等常见国内应用和域名直连规则 |
+| `ruleset/tixxin-cn-direct.yaml` | 微信、QQ、腾讯、抖音（含图片、视频、直播、电商与支付）等国内应用和域名直连规则 |
 | `ruleset/tixxin-game-direct.yaml` | PUBG、PUBG Datadog 遥测、反作弊、游戏启动器、加速器直连规则 |
 | `ruleset/tixxin-lan.yaml` | 本地、回环、局域网、私有地址直连规则 |
 | `ruleset/tixxin-steam-direct.yaml` | Steam 进程和 Steam 域名直连规则 |
