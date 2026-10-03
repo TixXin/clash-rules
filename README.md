@@ -11,11 +11,30 @@
 | `clash.yaml` | 脱敏版 Clash Party / Mihomo 完整配置模板，节点信息使用占位符 |
 | `ruleset/tixxin-ai-core.yaml` | ChatGPT、Codex、OpenAI、Claude、Anthropic 核心规则 |
 | `ruleset/tixxin-ip-check.yaml` | IP / DNS 检测站规则，用于另一台电脑手动测试住宅出口 |
-| `ruleset/tixxin-cn-direct.yaml` | 微信、QQ、腾讯、抖音（含图片、视频、直播、电商与支付）等国内应用和域名直连规则 |
+| `ruleset/tixxin-cn-direct.yaml` | 微信、QQ、抖音、哔哩哔哩及常见国内社交、影音、购物、出行、办公和网盘软件直连规则 |
 | `ruleset/tixxin-game-direct.yaml` | PUBG、PUBG Datadog 遥测、反作弊、游戏启动器、加速器直连规则 |
 | `ruleset/tixxin-lan.yaml` | 本地、回环、局域网、私有地址直连规则 |
 | `ruleset/tixxin-steam-direct.yaml` | Steam 进程和 Steam 域名直连规则 |
 | `ruleset/tixxin-webrtc-block.yaml` | 常见 WebRTC / STUN UDP 端口阻断规则 |
+
+## 国内软件直连覆盖
+
+`ruleset/tixxin-cn-direct.yaml` 按平台收录核心服务与主要资源域名，覆盖网页和使用这些域名的客户端：
+
+| 类别 | 软件 / 平台 |
+| --- | --- |
+| 社交与内容 | 微信、QQ、微博、知乎、小红书、百度、百度贴吧 |
+| 视频与直播 | 抖音、哔哩哔哩、快手、爱奇艺、优酷 / 土豆 / 酷喵、芒果 TV、腾讯视频 |
+| 音乐 | 网易云音乐、QQ 音乐、酷狗、酷我 |
+| 购物与支付 | 淘宝、天猫、闲鱼、支付宝、京东、拼多多 |
+| 生活与出行 | 美团、大众点评、饿了么、高德地图、携程、滴滴 |
+| 办公与工具 | 钉钉、飞书中国版、WPS、金山文档、腾讯会议、百度网盘、阿里云盘 / 阿里盘、夸克、UC、迅雷 |
+
+哔哩哔哩规则包含 API、`b23.tv` 短链接，以及图片、视频与直播 CDN。腾讯视频、腾讯会议的常用域名由已有的 `qq.com` / `tencent.com` 规则覆盖。
+
+现有 `clash.yaml` 已将这个规则集绑定到 `DIRECT` 并配置国内 DNS；刷新 `tixxin-cn-direct` 规则资源即可使用新增条目，无需新建规则提供者。平台专用域名参考 [v2fly/domain-list-community](https://github.com/v2fly/domain-list-community/tree/master/data) 与 [Blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash)，具体来源标在每组规则的注释中。
+
+淘宝使用的阿里 CDN 限定到已核查的子域。网盘、下载规则按平台域名匹配，用户自行添加的外部下载地址仍按其它规则分流。
 
 ## CDN 链接
 
