@@ -1,4 +1,7 @@
 payload:
+  # 自有国内服务：后台、API、预发布及运维域名统一直连。
+  # DNS/hosts 映射需在配置层维护；DIRECT 规则本身不创建 DNS 记录。
+  - "DOMAIN-SUFFIX,5d9.cn"
   - "DOMAIN-SUFFIX,weixin.qq.com"
   - "DOMAIN-SUFFIX,wx.qq.com"
   - "DOMAIN-SUFFIX,mp.weixin.qq.com"

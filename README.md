@@ -89,6 +89,14 @@ nameserver:
 
 ## Clash Party / Mihomo 示例配置
 
+### 自有服务与 SwitchHosts
+
+`5d9.cn` 已加入现有 `tixxin-cn-direct` 提供者。模板启用 `dns.use-system-hosts: true`，让 Mihomo 尊重本机 SwitchHosts / hosts 中的映射；只改路由为 DIRECT，并不能让忽略系统 hosts 的代理解析出该地址。该开关的含义见 [Mihomo DNS 官方文档](https://wiki.metacubex.one/config/dns/#use-system-hosts)。
+
+规则资源刷新只更新 `ruleset`，不会覆盖已导入的本地完整配置。已有 Clash Party 本地配置需要同步开启 `use-system-hosts` 并重载；保持原节点、AI 分流和 DNS 出口设置，禁止把含真实节点凭据的本地文件上传到本仓库。
+
+验收需同时检查代理路径和浏览器：直连成功、HTTP 代理失败时，继续核对核心 DNS 返回、系统 hosts 是否被采用、实际规则命中。若公开 DNS 返回 NXDOMAIN，hosts 只是本机修复；跨设备访问仍需域名所有者配置正确 DNS 记录，不能把本机 hosts 下的 200 当成公网 DNS 已正常。
+
 下面示例覆盖本仓库全部 7 个 YAML 规则集。`path` 是 Clash 本地缓存路径，不需要手动提前创建文件。
 
 ```yaml
