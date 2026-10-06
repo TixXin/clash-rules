@@ -41,7 +41,7 @@
 完整配置测试建议使用固定提交版，避免 jsDelivr 分支缓存滞后：
 
 ```text
-https://cdn.jsdelivr.net/gh/TixXin/clash-rules@2821752/clash.yaml
+https://cdn.jsdelivr.net/gh/TixXin/clash-rules@b453bab/clash.yaml
 ```
 
 规则集文件使用无版本 CDN 链接，方便 Clash Party 定期刷新规则：
