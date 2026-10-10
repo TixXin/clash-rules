@@ -1,4 +1,7 @@
 payload:
+  # 自有国内服务：后台、API、预发布及运维域名统一直连。
+  # DNS/hosts 映射需在配置层维护；DIRECT 规则本身不创建 DNS 记录。
+  - "DOMAIN-SUFFIX,5d9.cn"
   - "DOMAIN-SUFFIX,weixin.qq.com"
   - "DOMAIN-SUFFIX,wx.qq.com"
   - "DOMAIN-SUFFIX,mp.weixin.qq.com"
@@ -22,3 +25,376 @@ payload:
   - "PROCESS-NAME,weixin.exe"
   - "PROCESS-NAME,WeChat.exe"
   - "PROCESS-NAME,pixcake.exe"
+
+  # 抖音核心、分享、活动与前端资源。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/douyin
+  - "DOMAIN-SUFFIX,douyin.com"
+  - "DOMAIN-SUFFIX,amemv.com"
+  - "DOMAIN-SUFFIX,amemv.cn"
+  - "DOMAIN-SUFFIX,amemv.net"
+  - "DOMAIN-SUFFIX,iesdouyin.com"
+  - "DOMAIN-SUFFIX,iesdouyin.net"
+  - "DOMAIN-SUFFIX,douyinact.com"
+  - "DOMAIN-SUFFIX,douyinact.net"
+  - "DOMAIN-SUFFIX,douyinfe.com"
+
+  # 抖音图片、视频 CDN 与直播。
+  - "DOMAIN-SUFFIX,douyincdn.com"
+  - "DOMAIN-SUFFIX,douyinpic.com"
+  - "DOMAIN-SUFFIX,douyinstatic.com"
+  - "DOMAIN-SUFFIX,douyinvod.com"
+  - "DOMAIN-SUFFIX,idouyinpic.com"
+  - "DOMAIN-SUFFIX,idouyinstatic.com"
+  - "DOMAIN-SUFFIX,idouyinvod.com"
+  - "DOMAIN-SUFFIX,douyinliving.com"
+  - "DOMAIN-SUFFIX,idouyinliving.com"
+
+  # 抖音电商、支付、生活服务与开放平台。
+  - "DOMAIN-SUFFIX,douyinec.com"
+  - "DOMAIN-SUFFIX,douyinpay.com"
+  - "DOMAIN-SUFFIX,ulpay.com"
+  - "DOMAIN-SUFFIX,lifexue.com"
+  - "DOMAIN-SUFFIX,open-douyin.com"
+
+  # 抖音依赖的字节共享 API / 静态资源；也会覆盖使用它们的其它字节应用。
+  # 来源：https://github.com/blackmatrix7/ios_rule_script/blob/master/rule/Clash/DouYin/DouYin.yaml
+  - "DOMAIN-SUFFIX,snssdk.com"
+  - "DOMAIN-SUFFIX,pstatp.com"
+  - "DOMAIN,lf3-static.bytednsdoc.com"
+  - "DOMAIN,v5-dy-o-abtest.zjcdn.com"
+
+  # 哔哩哔哩：网页、App API、短链接、图片、视频与直播。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/bilibili
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/bilibili-cdn
+  # 来源：https://github.com/blackmatrix7/ios_rule_script/blob/master/rule/Clash/BiliBili/BiliBili.yaml
+  - "DOMAIN-SUFFIX,bilibili.com"
+  - "DOMAIN-SUFFIX,bilibili.cn"
+  - "DOMAIN-SUFFIX,bilibili.net"
+  - "DOMAIN-SUFFIX,bilibili.cc"
+  - "DOMAIN-SUFFIX,biliapi.com"
+  - "DOMAIN-SUFFIX,biliapi.net"
+  - "DOMAIN-SUFFIX,b23.tv"
+  - "DOMAIN-SUFFIX,acg.tv"
+  - "DOMAIN-SUFFIX,acgvideo.com"
+  - "DOMAIN-SUFFIX,biliimg.com"
+  - "DOMAIN-SUFFIX,bilivideo.com"
+  - "DOMAIN-SUFFIX,bilivideo.cn"
+  - "DOMAIN-SUFFIX,bilivideo.net"
+  - "DOMAIN-SUFFIX,hdslb.com"
+  - "DOMAIN-SUFFIX,hdslb.org"
+  - "DOMAIN-SUFFIX,bilicdn1.com"
+  - "DOMAIN-SUFFIX,bilicdn2.com"
+  - "DOMAIN-SUFFIX,bilicdn3.com"
+  - "DOMAIN-SUFFIX,bilicdn4.com"
+  - "DOMAIN-SUFFIX,bilicdn5.com"
+  - "DOMAIN,uposdash-302-bilivideo.yfcdn.net"
+
+  # 爱奇艺。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/iqiyi
+  - "DOMAIN-SUFFIX,iqiyi.com"
+  - "DOMAIN-SUFFIX,iqiyipic.com"
+  - "DOMAIN-SUFFIX,qiyi.com"
+  - "DOMAIN-SUFFIX,qiyipic.com"
+  - "DOMAIN-SUFFIX,qy.net"
+  - "DOMAIN-SUFFIX,71.am"
+  - "DOMAIN-SUFFIX,71edge.com"
+  - "DOMAIN-SUFFIX,pps.tv"
+  - "DOMAIN-SUFFIX,ppsimg.com"
+
+  # 优酷 / 土豆 / 酷喵。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/youku
+  - "DOMAIN-SUFFIX,youku.com"
+  - "DOMAIN-SUFFIX,ykimg.com"
+  - "DOMAIN-SUFFIX,soku.com"
+  - "DOMAIN-SUFFIX,tudou.com"
+  - "DOMAIN-SUFFIX,kumiao.com"
+  - "DOMAIN-SUFFIX,9xsecndns.cn"
+  - "DOMAIN,ykimg.alicdn.com"
+
+  # 芒果 TV。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/hunantv
+  - "DOMAIN-SUFFIX,mgtv.com"
+  - "DOMAIN-SUFFIX,hunantv.com"
+  - "DOMAIN-SUFFIX,hitv.com"
+  - "DOMAIN-SUFFIX,imgo.tv"
+
+  # 快手。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/kuaishou
+  - "DOMAIN-SUFFIX,kuaishou.com"
+  - "DOMAIN-SUFFIX,kuaishou.cn"
+  - "DOMAIN-SUFFIX,gifshow.com"
+  - "DOMAIN-SUFFIX,ksapisrv.com"
+  - "DOMAIN-SUFFIX,kuaishouapps.com"
+  - "DOMAIN-SUFFIX,kspkg.com"
+  - "DOMAIN-SUFFIX,kwimgs.com"
+  - "DOMAIN-SUFFIX,yximgs.com"
+  - "DOMAIN-SUFFIX,kwaicdn.com"
+
+  # 网易云音乐。
+  # 来源：https://github.com/blackmatrix7/ios_rule_script/blob/master/rule/Clash/NetEaseMusic/NetEaseMusic.yaml
+  - "DOMAIN-SUFFIX,music.163.com"
+  - "DOMAIN-SUFFIX,music.126.com"
+  - "DOMAIN-SUFFIX,music.126.net"
+  - "DOMAIN-SUFFIX,music.163.com.163jiasu.com"
+  - "DOMAIN-SUFFIX,api.iplay.163.com"
+  - "DOMAIN-SUFFIX,yun-app.net"
+  - "DOMAIN,netease.ugcvideoss.ourdvs.com"
+
+  # QQ 音乐；y.qq.com 等已由现有 qq.com 规则覆盖。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/tencent-tme
+  - "DOMAIN-SUFFIX,qqmusic.com"
+
+  # 酷狗音乐。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/kugou
+  - "DOMAIN-SUFFIX,kugou.com"
+  - "DOMAIN-SUFFIX,kugou.net"
+  - "DOMAIN-SUFFIX,kugoo.com"
+  - "DOMAIN-SUFFIX,kgimg.com"
+  - "DOMAIN-SUFFIX,kglink.cn"
+  - "DOMAIN-SUFFIX,kugouaudio.com"
+  - "DOMAIN-SUFFIX,kugouipv6.com"
+
+  # 酷我音乐。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/kuwo
+  - "DOMAIN-SUFFIX,kuwo.cn"
+  - "DOMAIN-SUFFIX,koowo.cn"
+  - "DOMAIN-SUFFIX,koowo.com"
+
+  # 微博。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/sina
+  - "DOMAIN-SUFFIX,weibo.cn"
+  - "DOMAIN-SUFFIX,weibo.com"
+  - "DOMAIN-SUFFIX,weibo.com.cn"
+  - "DOMAIN-SUFFIX,weibocdn.com"
+  - "DOMAIN-SUFFIX,sinaimg.cn"
+  - "DOMAIN-SUFFIX,sinaimg.com"
+  - "DOMAIN-SUFFIX,sinajs.cn"
+  - "DOMAIN-SUFFIX,sinajs.com"
+  - "DOMAIN-SUFFIX,wbimg.cn"
+  - "DOMAIN-SUFFIX,wbimg.com"
+  - "DOMAIN-SUFFIX,t.cn"
+
+  # 知乎。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/zhihu
+  - "DOMAIN-SUFFIX,zhihu.com"
+  - "DOMAIN-SUFFIX,zhimg.com"
+  - "DOMAIN-SUFFIX,vzuu.com"
+
+  # 小红书。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/xiaohongshu
+  - "DOMAIN-SUFFIX,xiaohongshu.com"
+  - "DOMAIN-SUFFIX,xhscdn.com"
+  - "DOMAIN-SUFFIX,xhscdn.net"
+  - "DOMAIN-SUFFIX,xhslink.com"
+  - "DOMAIN-SUFFIX,xhsrcdn.com"
+
+  # 百度 / 百度网盘 / 百度贴吧。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/baidu
+  - "DOMAIN-SUFFIX,baidu.com"
+  - "DOMAIN-SUFFIX,baidu.cn"
+  - "DOMAIN-SUFFIX,baidu.com.cn"
+  - "DOMAIN-SUFFIX,baiduapp.com"
+  - "DOMAIN-SUFFIX,baiducontent.com"
+  - "DOMAIN-SUFFIX,baidupcs.com"
+  - "DOMAIN-SUFFIX,baidustatic.com"
+  - "DOMAIN-SUFFIX,bdimg.com"
+  - "DOMAIN-SUFFIX,bdstatic.com"
+  - "DOMAIN-SUFFIX,baiduyuncdn.cn"
+  - "DOMAIN-SUFFIX,baiduyuncdn.com"
+  - "DOMAIN-SUFFIX,baiduyuncdn.net"
+  - "DOMAIN-SUFFIX,bdycdn.cn"
+  - "DOMAIN-SUFFIX,bdycdn.net"
+  - "DOMAIN-SUFFIX,tieba.com"
+  - "DOMAIN-SUFFIX,tiebaimg.com"
+
+  # 淘宝 / 天猫 / 闲鱼。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/alibaba
+  # 来源：https://github.com/blackmatrix7/ios_rule_script/blob/master/rule/Clash/XianYu/XianYu.list
+  - "DOMAIN-SUFFIX,taobao.com"
+  - "DOMAIN-SUFFIX,taobao.net"
+  - "DOMAIN-SUFFIX,taobaocdn.com"
+  - "DOMAIN-SUFFIX,tbcache.com"
+  - "DOMAIN-SUFFIX,tbcdn.cn"
+  - "DOMAIN-SUFFIX,tb.cn"
+  - "DOMAIN-SUFFIX,tmall.com"
+  - "DOMAIN-SUFFIX,goofish.com"
+  - "DOMAIN-SUFFIX,xianyu.mobi"
+  - "DOMAIN-SUFFIX,aliimg.com"
+
+  # 淘宝页面使用的阿里静态资源：限定到页面实际使用的 CDN 子域。
+  # 来源：https://www.taobao.com/
+  - "DOMAIN-SUFFIX,g.alicdn.com"
+  - "DOMAIN-SUFFIX,gw.alicdn.com"
+  - "DOMAIN-SUFFIX,img.alicdn.com"
+  - "DOMAIN-SUFFIX,o.alicdn.com"
+
+  # 支付宝。
+  # 来源：https://github.com/blackmatrix7/ios_rule_script/blob/master/rule/Clash/AliPay/AliPay.list
+  - "DOMAIN-SUFFIX,alipay.com"
+  - "DOMAIN-SUFFIX,alipay.cn"
+  - "DOMAIN-SUFFIX,alipay.com.cn"
+  - "DOMAIN-SUFFIX,alipay.net"
+  - "DOMAIN-SUFFIX,alipayobjects.com"
+  - "DOMAIN-SUFFIX,alipaydns.com"
+
+  # 京东。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/jd
+  - "DOMAIN-SUFFIX,jd.com"
+  - "DOMAIN-SUFFIX,jd.cn"
+  - "DOMAIN-SUFFIX,jd.com.cn"
+  - "DOMAIN-SUFFIX,jdcdn.com"
+  - "DOMAIN-SUFFIX,jdcache.com"
+  - "DOMAIN-SUFFIX,360buy.com"
+  - "DOMAIN-SUFFIX,360buy.cn"
+  - "DOMAIN-SUFFIX,360buy.com.cn"
+  - "DOMAIN-SUFFIX,360buyimg.com"
+  - "DOMAIN-SUFFIX,jingdong.com"
+  - "DOMAIN-SUFFIX,jdpay.com"
+  - "DOMAIN-SUFFIX,jdpaydns.com"
+  - "DOMAIN-SUFFIX,3.cn"
+
+  # 拼多多。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/pinduoduo
+  - "DOMAIN-SUFFIX,pinduoduo.com"
+  - "DOMAIN-SUFFIX,pinduoduo.net"
+  - "DOMAIN-SUFFIX,yangkeduo.com"
+  - "DOMAIN-SUFFIX,pddcdn.com"
+  - "DOMAIN-SUFFIX,pddpic.com"
+  - "DOMAIN-SUFFIX,pddim.com"
+  - "DOMAIN-SUFFIX,pddugc.com"
+
+  # 美团 / 大众点评。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/meituan
+  - "DOMAIN-SUFFIX,meituan.com"
+  - "DOMAIN-SUFFIX,meituan.net"
+  - "DOMAIN-SUFFIX,sankuai.com"
+  - "DOMAIN-SUFFIX,dianping.com"
+  - "DOMAIN-SUFFIX,dpfile.com"
+  - "DOMAIN-SUFFIX,51ping.com"
+
+  # 饿了么。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/eleme
+  - "DOMAIN-SUFFIX,ele.me"
+  - "DOMAIN-SUFFIX,ele.to"
+  - "DOMAIN-SUFFIX,eleme.cn"
+  - "DOMAIN-SUFFIX,eleme.io"
+  - "DOMAIN-SUFFIX,elemecdn.cn"
+  - "DOMAIN-SUFFIX,elemecdn.com"
+  - "DOMAIN-SUFFIX,elenet.me"
+  - "DOMAIN-SUFFIX,fengniaojipei.net"
+
+  # 高德地图。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/amap
+  - "DOMAIN-SUFFIX,amap.com"
+  - "DOMAIN-SUFFIX,amap.net"
+  - "DOMAIN-SUFFIX,autonavi.com"
+  - "DOMAIN-SUFFIX,gaode.com"
+  - "DOMAIN-SUFFIX,amapauto.com"
+
+  # 携程。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/ctrip
+  - "DOMAIN-SUFFIX,ctrip.com"
+  - "DOMAIN-SUFFIX,ctrip.cn"
+  - "DOMAIN-SUFFIX,c-ctrip.com"
+  - "DOMAIN-SUFFIX,ctripgslb.cn"
+  - "DOMAIN-SUFFIX,ctripgslb.com"
+  - "DOMAIN-SUFFIX,ctripgslb.com.cn"
+  - "DOMAIN-SUFFIX,ctripgslb.net"
+  - "DOMAIN-SUFFIX,tripcdn.cn"
+
+  # 滴滴。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/didi
+  - "DOMAIN-SUFFIX,didi.cn"
+  - "DOMAIN-SUFFIX,didichuxing.com"
+  - "DOMAIN-SUFFIX,didistatic.com"
+  - "DOMAIN-SUFFIX,diditaxi.com.cn"
+  - "DOMAIN-SUFFIX,udache.com"
+  - "DOMAIN-SUFFIX,xiaojukeji.com"
+
+  # 钉钉。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/dingtalk
+  - "DOMAIN-SUFFIX,ddurl.to"
+  - "DOMAIN-SUFFIX,dingding.xin"
+  - "DOMAIN-SUFFIX,dingstore.cn"
+  - "DOMAIN-SUFFIX,dingtalk.cn"
+  - "DOMAIN-SUFFIX,dingtalk.com"
+  - "DOMAIN-SUFFIX,dingtalk.net"
+  - "DOMAIN-SUFFIX,dingtalkapps.com"
+  - "DOMAIN-SUFFIX,dingtalkcloud.com"
+  - "DOMAIN-SUFFIX,lwurl.to"
+  - "DOMAIN-SUFFIX,ztna-dingtalk.com"
+
+  # 飞书中国版。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/feishu
+  - "DOMAIN-SUFFIX,feishu.cn"
+  - "DOMAIN-SUFFIX,feishu.net"
+  - "DOMAIN-SUFFIX,feishuapp-cdn.net"
+  - "DOMAIN-SUFFIX,feishuapp.cn"
+  - "DOMAIN-SUFFIX,feishuapp.com"
+  - "DOMAIN-SUFFIX,feishucdn.com"
+  - "DOMAIN-SUFFIX,feishudoc.cn"
+  - "DOMAIN-SUFFIX,feishudoc.com"
+  - "DOMAIN-SUFFIX,feishuhuiyi.cn"
+  - "DOMAIN-SUFFIX,feishuhuiyi.com"
+  - "DOMAIN-SUFFIX,feishuimg.com"
+  - "DOMAIN-SUFFIX,feishukacdn.com"
+  - "DOMAIN-SUFFIX,feishumeetings.cn"
+  - "DOMAIN-SUFFIX,feishumeetings.com"
+  - "DOMAIN-SUFFIX,feishuoffice.cn"
+  - "DOMAIN-SUFFIX,feishuoffice.com"
+  - "DOMAIN-SUFFIX,feishupkg.com"
+  - "DOMAIN-SUFFIX,feishuvc.cn"
+  - "DOMAIN-SUFFIX,feishuvc.com"
+  - "DOMAIN-SUFFIX,securityfeishu.cn"
+  - "DOMAIN-SUFFIX,securityfs.cn"
+  - "DOMAIN-SUFFIX,feishu-3rd-party-services.com"
+  - "DOMAIN-SUFFIX,getfeishu.cn"
+  - "DOMAIN-SUFFIX,getfeishu.com"
+
+  # WPS / 金山文档。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/wps
+  - "DOMAIN-SUFFIX,wps.cn"
+  - "DOMAIN-SUFFIX,wpscdn.cn"
+  - "DOMAIN-SUFFIX,qwps.cn"
+  - "DOMAIN-SUFFIX,kimxz.com"
+  - "DOMAIN-SUFFIX,docer.com"
+  - "DOMAIN-SUFFIX,kdocs.cn"
+  - "DOMAIN-SUFFIX,wpsmail.net"
+  - "DOMAIN-SUFFIX,wpspdf.cn"
+
+  # 阿里云盘 / 阿里盘。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/aliyun-drive
+  - "DOMAIN-SUFFIX,alicloudccp.com"
+  - "DOMAIN-SUFFIX,alipan.com"
+  - "DOMAIN-SUFFIX,aliyundrive.cloud"
+  - "DOMAIN-SUFFIX,aliyundrive.com"
+  - "DOMAIN-SUFFIX,aliyundrive.net"
+  - "DOMAIN-SUFFIX,yunpan.aliyun.com"
+
+  # 夸克。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/alibaba
+  - "DOMAIN-SUFFIX,cueme.cn"
+  - "DOMAIN-SUFFIX,myquark.cn"
+  - "DOMAIN-SUFFIX,quark.cn"
+
+  # UC 浏览器。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/uc
+  # 来源：https://github.com/blackmatrix7/ios_rule_script/blob/master/rule/Clash/UC/UC.yaml
+  - "DOMAIN-SUFFIX,uc.cn"
+  - "DOMAIN-SUFFIX,ucfly.com"
+  - "DOMAIN-SUFFIX,open-uc.cn"
+  - "DOMAIN-SUFFIX,uc-engine.cn"
+  - "DOMAIN-SUFFIX,ucweb.cn"
+  - "DOMAIN-SUFFIX,ucweb.com.cn"
+
+  # 迅雷。
+  # 来源：https://github.com/v2fly/domain-list-community/blob/master/data/xunlei
+  - "DOMAIN-SUFFIX,8uri.cn"
+  - "DOMAIN-SUFFIX,kanimg.com"
+  - "DOMAIN-SUFFIX,sandai.net"
+  - "DOMAIN-SUFFIX,thunderurl.com"
+  - "DOMAIN-SUFFIX,xunlei.com"
+  - "DOMAIN-SUFFIX,00cdn.com"
+  - "DOMAIN-SUFFIX,88cdn.com"
+  - "DOMAIN-SUFFIX,p2cdn.com"
+  - "DOMAIN-SUFFIX,thundercdn.com"
